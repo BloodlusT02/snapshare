@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="/stylesheets/profile.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="py-3 px-8 flex justify-between items-center bg-white">
+      <a href="#" class="flex gap-3 items-center" id="brand">
+        <span class="font-semibold text-lg">SnapShare</span>
+      </a>
+
+      <div id="nav-menu" class="hidden lg:flex lg:items-center gap-10">
+        <a
+          class="font-semibold hover:text-[#ff006e] nav-link hover:border-b transition hover:-translate-y-1 border-[#ff006e] w-fit"
+          href="/feed"
+          >Feed</a
+        >
+        <a
+          class="font-semibold hover:text-[#ff006e] nav-link hover:border-b transition hover:-translate-y-1 border-[#ff006e] w-fit"
+          href="/profile"
+          >Profile</a
+        >
+        <a
+          href="/logout"
+          class="bg-black text-white px-10 py-3 font-semibold hover:text-[#ff006e]"
+          >Logout <i class="ri-arrow-right-up-line"></i
+        ></a>
+      </div>
+
+      <button id="menuButton" class="p-2 md:hidden">
+        <i class="ri-menu-line text-gray-600 font-semibold"></i>
+      </button>
+
+      <div
+        id="nav-dialog"
+        class="hidden fixed z-10 md:hidden bg-white inset-0 p-3"
+      >
+        <div id="nav-bar" class="flex justify-between">
+          <a href="#" class="flex gap-3 items-center" id="brand">
+            <span class="font-semibold text-lg">SnapShare</span>
+          </a>
+          <button id="closeMenuButton" class="p-2 md:hidden">
+            <i class="ri-close-large-line text-gray-600 font-semibold"></i>
+          </button>
+        </div>
+        <div class="mt-6">
+          <a
+            href="/feed"
+            class="font-semibold m-3 p-3 block rounded-md hover:bg-gray-50"
+            >Feed</a
+          >
+          <a
+            href="/profile"
+            class="font-semibold m-3 p-3 block rounded-md hover:bg-gray-50"
+            >Profile</a
+          >
+          <a
+            href="/logout"
+            class="bg-black text-white px-10 py-3 font-semibold hover:text-[#ff006e]"
+            >Logout <i class="ri-arrow-right-up-line"></i
+          ></a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="p-3">
+      <form
+        id="uploadForm"
+        hidden
+        action="/fileupload"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <input type="file" name="image" />
+      </form>
+
+      <div class="py-8 flex flex-col items-center">
+        <div class="relative w-fit">
+          <span
+            id="uploadIcon"
+            class="w-7 h-7 absolute bottom-0 right-0 rounded-full flex items-center justify-center bg-red-300 cursor-pointer"
+          >
+            <i class="text-zinc-800 ri-pencil-fill"></i>
+          </span>
+          <div
+            class="w-20 h-20 lg:w-24 lg:h-24 bg-zinc-200 rounded-full overflow-hidden"
+          >
+            <% if(user.profileImage){ %>
+            <img
+              class="w-full h-full object-cover"
+              src="/images/uploads/<%= user.profileImage %>"
+              alt=""
+            />
+            <% }else{ %>
+            <img
+              class="w-full h-full object-cover"
+              src="/images/no-person-image.png"
+              alt=""
+            />
+            <% } %>
+          </div>
+        </div>
+        <h2 class="text-xl lg:text-2xl font-semibold mt-5"><%= user.name %></h2>
+        <p class="text-base xl:text-lg text-slate-600">@<%= user.username %></p>
+        <a href="/uploadpost"
+          ><button
+            class="px-7 py-2 bg-zinc-300 rounded-full text-xs font-semibold mt-4"
+          >
+            Add Post
+          </button></a
+        >
+      </div>
+
+      <!-- Posts -->
+      <div class="cards flex flex-wrap gap-4 md:gap-7 mt-10 px-2">
+        <% user.posts.forEach(function(post){ %>
+
+        <div class="card">
+          <div class="w-40 h-48 bg-zinc-200 rounded-lg overflow-hidden">
+            <img
+              class="w-full h-full object-cover rounded-lg"
+              src="/images/uploads/<%= post.postImage %>"
+              alt=""
+            />
+          </div>
+          <h5
+            class="text-base font-medium opacity-80 border-2 px-3 mt-2 border-black hover:scale-105 transition"
+          >
+            <%= post.title %>
+          </h5>
+        </div>
+
+        <% }) %>
+      </div>
+    </div>
+
+    <script>
+      // Selecting elements
+      const menuButton = document.getElementById("menuButton");
+      const closeMenuButton = document.getElementById("closeMenuButton");
+      const navDialog = document.getElementById("nav-dialog");
+      const navLinks = document.querySelectorAll(".nav-link");
+
+      // Function to handle menu button click
+      const handleMenu = () => {
+        navDialog.classList.toggle("hidden");
+      };
+
+      // Function to handle close menu button click
+      const handleCloseMenu = () => {
+        navDialog.classList.add("hidden");
+      };
+
+      // Attaching event listeners
+      menuButton.addEventListener("click", handleMenu);
+      closeMenuButton.addEventListener("click", handleCloseMenu);
+
+      // Adding event listeners to nav links to close the menu when clicked
+      navLinks.forEach((link) => {
+        link.addEventListener("click", handleCloseMenu);
+      });
+
+      document.querySelector("#uploadIcon").addEventListener("click", () => {
+        document.querySelector("#uploadForm input").click();
+      });
+
+      document
+        .querySelector("#uploadForm input")
+        .addEventListener("change", () => {
+          document.querySelector("#uploadForm").submit();
+        });
+    </script>
+  </body>
+</html>

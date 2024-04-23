@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Your Post</title>
+    <link rel="stylesheet" href="/stylesheets/postform.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="py-3 px-8 flex justify-between items-center bg-white">
+      <a href="#" class="flex gap-3 items-center" id="brand">
+        <span class="font-semibold text-lg">SnapShare</span>
+      </a>
+
+      <div id="nav-menu" class="hidden lg:flex lg:items-center gap-10">
+        <a
+          class="font-semibold hover:text-[#ff006e] nav-link hover:border-b transition hover:-translate-y-1 border-[#ff006e] w-fit"
+          href="/feed"
+          >Feed</a
+        >
+        <a
+          class="font-semibold hover:text-[#ff006e] nav-link hover:border-b transition hover:-translate-y-1 border-[#ff006e] w-fit"
+          href="/profile"
+          >Profile</a
+        >
+        <a
+          href="/logout"
+          class="bg-black text-white px-10 py-3 font-semibold hover:text-[#ff006e]"
+          >Logout <i class="ri-arrow-right-up-line"></i
+        ></a>
+      </div>
+
+      <button id="menuButton" class="p-2 md:hidden">
+        <i class="ri-menu-line text-gray-600 font-semibold"></i>
+      </button>
+
+      <div
+        id="nav-dialog"
+        class="hidden fixed z-10 md:hidden bg-white inset-0 p-3"
+      >
+        <div id="nav-bar" class="flex justify-between">
+          <a href="#" class="flex gap-3 items-center" id="brand">
+            <span class="font-semibold text-lg">SnapShare</span>
+          </a>
+          <button id="closeMenuButton" class="p-2 md:hidden">
+            <i class="ri-close-large-line text-gray-600 font-semibold"></i>
+          </button>
+        </div>
+        <div class="mt-6">
+          <a
+            href="#"
+            class="font-semibold m-3 p-3 block rounded-md hover:bg-gray-50"
+            >Feed</a
+          >
+          <a
+            href="#"
+            class="font-semibold m-3 p-3 block rounded-md hover:bg-gray-50"
+            >Profile</a
+          >
+          <a
+            href="/logout"
+            class="bg-black text-white px-10 py-3 font-semibold hover:text-[#ff006e]"
+            >Logout <i class="ri-arrow-right-up-line"></i
+          ></a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="flex flex-col items-center">
+      <div class="h-12 px-6 mt-6 md:w-[768px]">
+        <h2 class="text-lg">Create a new post</h2>
+        <div class="w-full h-[1px] border border-black opacity-50"></div>
+      </div>
+
+      <div class="flex flex-col md:w-[768px]">
+        <div class="p-3">
+          <div class="py-6 pb-8 bg-[#ccdbfd] shadow-2xl rounded-md">
+            <form
+              class="px-3 mt-4 flex flex-col gap-2"
+              action="/createpost"
+              method="post"
+              enctype="multipart/form-data"
+            >
+            <label for="" class="px-3 text-lg">Choose your post image :</label>
+              <input
+                name="postimage"
+                class="w-full text-sm px-3 py-1 rounded outline-none"
+                type="file"
+                placeholder="name"
+              />
+              <input
+                name="posttitle"
+                class="w-full text-lg px-3 py-1 rounded outline-none mt-6"
+                type="text"
+                placeholder="Post Title"
+              />
+              <textarea name="description" class="text-lg px-3 py-1 rounded outline-none" rows="5" placeholder="Post Description"></textarea>
+
+              <input
+                class="bg-white text-lg py-1 rounded font-semibold hover:bg-[#c8b6ff] transition duration-150 cursor-pointer"
+                type="submit"
+                value="Upload"
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Selecting elements
+      const menuButton = document.getElementById("menuButton");
+      const closeMenuButton = document.getElementById("closeMenuButton");
+      const navDialog = document.getElementById("nav-dialog");
+      const navLinks = document.querySelectorAll(".nav-link");
+
+      // Function to handle menu button click
+      const handleMenu = () => {
+        navDialog.classList.toggle("hidden");
+      };
+
+      // Function to handle close menu button click
+      const handleCloseMenu = () => {
+        navDialog.classList.add("hidden");
+      };
+
+      // Attaching event listeners
+      menuButton.addEventListener("click", handleMenu);
+      closeMenuButton.addEventListener("click", handleCloseMenu);
+
+      // Adding event listeners to nav links to close the menu when clicked
+      navLinks.forEach((link) => {
+        link.addEventListener("click", handleCloseMenu);
+      });
+    </script>
+  </body>
+</html>

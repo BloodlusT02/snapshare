@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post Details</title>
+    <link rel="stylesheet" href="/stylesheets/details.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- small medium screen -->
+    <div class="bg-gray-200 shadow-2xl h-screen flex items-center justify-center lg:hidden">
+      <div class="bg-white w-72 rounded overflow-hidden md:w-96">
+
+
+        <div class="flex justify-between items-center px-2 py-1">
+          <div class="h-16  flex items-center gap-3">
+            <img class="w-14 h-14 rounded-full object-cover" src="https://i.pinimg.com/736x/59/78/cf/5978cf31011dcbad479a24634507d0c3.jpg" alt="">
+            <p class="font-semibold ">@<%= post.user.username %></p>
+          </div>
+
+          <div class="flex gap-3 ">
+            <i id="downloadButtonMobile" class="ri-download-2-fill text-xl"></i>
+            <i id="shareButtonMobile" class="ri-share-forward-fill text-xl"></i>
+          </div>
+        </div>
+
+        <div class="h-96 bg-black">
+          <img class="w-full h-full object-cover" src="/images/uploads/<%= post.postImage %>" alt="">
+        </div>
+
+        <div class="">
+          <p class="pt-4 pl-6 font-semibold text-lg"><%= post.title %></p>
+
+          <div class="px-2 my-2">
+            <div class="w-full h-[1px] border border-black opacity-40"></div>
+          </div>
+
+          <p class="h-32 p-2 overflow-y-auto opacity-80">
+            <%= post.description %>
+          </p>
+        </div>
+
+        <div class="h-20 flex items-center justify-center gap-2">
+          <div class="w-20 h-[1px] border border-black"></div>
+          <i class="ri-instagram-line text-xl text-pink-500 md:text-2xl"></i>
+          <i class="ri-twitter-x-line text-xl md:text-2xl"></i>
+          <i class="ri-facebook-circle-fill text-xl text-blue-500 md:text-2xl"></i>
+          <div class="w-20 h-[1px] border border-black"></div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+    <!-- large and extra large -->
+    <div
+      class="hidden lg:flex bg-gray-100 h-screen items-center justify-center"
+    >
+      <div
+        class="w-[80%] h-[80%] bg-white shadow-2xl rounded-3xl overflow-hidden flex 2xl:w-[70%]"
+      >
+        <div class="part-1 w-1/2 h-full">
+          <img
+            class="downloadImage w-full h-full object-cover"
+            src="/images/uploads/<%= post.postImage %>"
+            alt=""
+          />
+        </div>
+        <div class="part-2 w-1/2 h-full">
+          <!-- icons share and download -->
+          <div class="flex justify-between px-4 mt-4">
+            <i
+              id="downloadButton"
+              class="ri-download-2-line text-2xl cursor-pointer"
+            ></i>
+            <i
+              id="shareButton"
+              class="ri-share-forward-fill text-2xl cursor-pointer"
+            ></i>
+          </div>
+
+          <!-- user -->
+          <div class="h-20 mt-10 flex items-center justify-between px-4">
+            <div class="flex items-center gap-3">
+              <img
+                class="w-14 h-14 object-cover rounded-full"
+                src="/images/uploads/<%= post.user.profileImage %>"
+                alt=""
+              />
+              <p class="font-semibold opacity-75">@<%= post.user.username %></p>
+            </div>
+            <div>
+              <i class="ri-more-fill font-semibold text-xl cursor-pointer"></i>
+            </div>
+          </div>
+
+          <!-- post Details -->
+          <h2 class="text-xl font-semibold px-4 mt-10"><%= post.title %></h2>
+          <p class="mt-6 px-5 opacity-70"><%= post.description %></p>
+
+          <div class="my-4 px-3">
+            <div class="w-full border-[1px] opacity-40 border-black"></div>
+          </div>
+
+          <p class="px-5">
+            #DigitalArt #AnimeStyle #Illustration #CharacterDesign
+            #ArtisticPortraits #OrangeTheme #FantasyArt #CreativeDesign
+          </p>
+
+          <div class="h-16 mt-4 flex items-center justify-center gap-2 text-xl">
+            <div class="w-20 h-[1px] border border-black"></div>
+            <i class="ri-instagram-line text-pink-500"></i>
+            <i class="ri-twitter-x-line"></i>
+            <i class="ri-facebook-circle-fill text-blue-600"></i>
+            <div class="w-20 h-[1px] border border-black"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // JavaScript Share for mobile
+      const shareButtonMobile = document.getElementById("shareButtonMobile");
+
+      shareButtonMobile.addEventListener("click", async () => {
+        const shareData = {
+          title: document.title,
+          text: "Check out this page:",
+          url: window.location.href,
+        };
+
+        try {
+          await navigator.share(shareData);
+          console.log("Successfully shared");
+        } catch (err) {
+          console.log("Error sharing:", err.message);
+          showFallbackShareOptions();
+        }
+      });
+
+      // JavaScript Share for Big Screen
+      const shareButton = document.getElementById("shareButton");
+
+      shareButton.addEventListener("click", async () => {
+        const shareData = {
+          title: document.title,
+          text: "Check out this page:",
+          url: window.location.href,
+        };
+
+        try {
+          await navigator.share(shareData);
+          console.log("Successfully shared");
+        } catch (err) {
+          console.log("Error sharing:", err.message);
+          showFallbackShareOptions();
+        }
+      });
+
+      // JavaScript Download for mobile
+      const imageElementMobile = document.querySelector(".part-1 img");
+      const downloadButtonMobile = document.getElementById(
+        "downloadButtonMobile"
+      );
+
+      downloadButtonMobile.addEventListener("click", () => {
+        const imageSrc = imageElementMobile.src;
+        const fileName = getFileNameFromUrl(imageSrc);
+
+        const downloadLink = document.createElement("a");
+        downloadLink.href = imageSrc;
+        downloadLink.download = fileName;
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      });
+
+      // JavaScript Download for big screen
+      const imageElement = document.querySelector(".downloadImage");
+      const downloadButton = document.getElementById("downloadButton");
+
+      downloadButton.addEventListener("click", () => {
+        const imageSrc = imageElement.src;
+        const fileName = getFileNameFromUrl(imageSrc);
+
+        const downloadLink = document.createElement("a");
+        downloadLink.href = imageSrc;
+        downloadLink.download = fileName;
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      });
+
+      function getFileNameFromUrl(url) {
+        return url.substring(url.lastIndexOf("/") + 1);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Your Account</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <body class="h-screen flex justify-center items-center">
+      <!-- small size -->
+      <div class="flex flex-col md:w-[768px]">
+        <div class="">
+          <!-- <h2 class="text-4xl font-semibold md:text-5xl lg:text-6xl">Welcome</h2> -->
+          <div class="flex items-center gap-3 mt-2">
+            <div id="line" class="h-[1px] w-20 border border-black"></div>
+            <h3 class="text-lg md:text-xl">
+              <span class="text-[#ff006e] font-semibold">Create</span> a account
+              to see more <i class="ri-login-circle-line"></i>
+            </h3>
+          </div>
+        </div>
+
+        <div class="p-3">
+          <div class="py-6 pb-8 bg-[#ccdbfd] shadow-2xl rounded-md">
+            <h1 class="text-2xl font-semibold px-6 pt-4 lg:text-3xl">
+              Sign Up
+            </h1>
+            <form
+              class="px-3 mt-4 flex flex-col gap-2"
+              action="/register"
+              method="post"
+            >
+              <input
+                name="name"
+                class="w-full text-lg px-3 py-1 rounded outline-none"
+                type="text"
+                placeholder="name"
+              />
+              <input
+                name="username"
+                class="w-full text-lg px-3 py-1 rounded outline-none"
+                type="text"
+                placeholder="username"
+              />
+              <input
+                name="email"
+                class="w-full text-lg px-3 py-1 rounded outline-none"
+                type="email"
+                placeholder="email"
+              />
+              <input
+                name="password"
+                class="w-full text-lg px-3 py-1 rounded outline-none"
+                type="password"
+                placeholder="password"
+              />
+              <input
+                class="bg-white text-lg py-1 rounded font-semibold hover:bg-[#c8b6ff] transition cursor-pointer"
+                type="submit"
+                value="Create"
+              />
+              <a
+                href="/login"
+                class="block w-full text-[#ff006e] font-semibold text-center"
+                >Login <i class="ri-arrow-right-up-fill"></i
+              ></a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </body>
+  </body>
+</html>
