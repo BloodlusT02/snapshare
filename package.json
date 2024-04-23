@@ -4,9 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
-    "build:css": "postcss public/stylesheets/tailwind.css -o public/stylesheets/login.css",
-    "build": "echo 'No build necessary for Node.js server application'"
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "autoprefixer": "^10.4.19",
