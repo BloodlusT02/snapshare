@@ -40,7 +40,8 @@ router.post('/register', async function(req, res, next) {
 // Login
 router.post('/login', passport.authenticate("local", {
   successRedirect: "/profile",
-  failureRedirect: "/login"
+  failureRedirect: "/login",
+  failureFlash: true
 }), function(req, res, next) {
 });
 
@@ -102,7 +103,7 @@ router.get('/register', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
-  res.render('login');
+  res.render('login', { error: req.flash('error') });
 });
 
 router.get('/profile', isLoggedIn, async function(req, res, next) {
