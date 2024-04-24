@@ -14,7 +14,7 @@ passport.use(new localStrategy(userModel.authenticate()));
 // Connect to MongoDB once when the server starts up
 (async () => {
   try {
-    await mongoose.connect(`${process.env.MONGO_URI}/snapshare`)
+    await mongoose.connect(`mongodb+srv://ritikrajbhar321:geeta321@snapshare.jdqurkh.mongodb.net/snapshare`)
     console.log("Connected to MongoDB");
   } catch (error) {
     console.error("ERROR connecting to MongoDB: ", error);
