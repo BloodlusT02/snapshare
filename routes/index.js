@@ -1,92 +1,109 @@
 const mongoose = require("mongoose");
 const upload = require("./multer");
-
 var express = require('express');
 var router = express.Router();
-
 const userModel = require("./users");
 const postModel = require("./post");
-
 const localStrategy = require("passport-local");
 const passport = require("passport");
-passport.use(new localStrategy(userModel.authenticate()));
 
-// Connect to MongoDB once when the server starts up
-(async () => {
+// Connect to MongoDB once and export the connection
+const connectToMongoDB = async () => {
   try {
-    await mongoose.connect(`mongodb+srv://ritikrajbhar321:geeta321@snapshare.jdqurkh.mongodb.net/snapshare`)
+    await mongoose.connect(`mongodb+srv://ritikrajbhar321:geeta321@snapshare.jdqurkh.mongodb.net/snapshare`);
     console.log("Connected to MongoDB");
   } catch (error) {
     console.error("ERROR connecting to MongoDB: ", error);
     process.exit(1); // Exit the process if we can't connect to the database
   }
-})();
+};
+
+connectToMongoDB();
+
+passport.use(new localStrategy(userModel.authenticate()));
 
 // Post routes
-
 // Register
 router.post('/register', async function(req, res, next) {
-  const { name, username, email } = req.body;
-  const userData = new userModel({ name, username, email });
-
-  userModel.register(userData, req.body.password)
-  .then(() => {
-    passport.authenticate("local")(req, res, function(){
-      res.redirect("/profile");
-    });
-  });
+  try {
+    const { name, username, email } = req.body;
+    const userData = new userModel({ name, username, email });
+    userModel.register(userData, req.body.password)
+      .then(() => {
+        passport.authenticate("local")(req, res, function() {
+          res.redirect("/profile");
+        });
+      });
+  } catch (error) {
+    console.error("Error in /register route:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Login
-router.post('/login', passport.authenticate("local", {
-  successRedirect: "/profile",
-  failureRedirect: "/login",
-  failureFlash: true
-}), function(req, res, next) {
+router.post('/login', passport.authenticate("local", { successRedirect: "/profile", failureRedirect: "/login", failureFlash: true }), function(req, res, next) {
+  // Handle any additional logic for login route
 });
 
 // Logout
-router.get("/logout", function(req, res, next){
-  req.logout(function(err) {
-    if (err) { return next(err); }
-    res.redirect('/');
-  });
+router.get("/logout", function(req, res, next) {
+  try {
+    req.logout(function(err) {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/');
+    });
+  } catch (error) {
+    console.error("Error in /logout route:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // File upload
 router.post("/fileupload", isLoggedIn, upload.single("image"), async (req, res, next) => {
-  const user = await userModel.findOne({ username: req.session.passport.user });
-  user.profileImage = req.file.filename;
-  await user.save();
-  res.redirect("/profile")
+  try {
+    const user = await userModel.findOne({ username: req.session.passport.user });
+    user.profileImage = req.file.filename;
+    await user.save();
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error in /fileupload route:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // File upload
 router.post("/createpost", isLoggedIn, upload.single("postimage"), async (req, res, next) => {
-  const user = await userModel.findOne({ username: req.session.passport.user });
-
-  const postData = await postModel.create({
-    user: user._id,
-    title: req.body.posttitle,
-    postImage: req.file.filename,
-    description: req.body.description
-  });
-
-  user.posts.push(postData._id);
-  await user.save();
-  res.redirect("/profile")
-
+  try {
+    const user = await userModel.findOne({ username: req.session.passport.user });
+    const postData = await postModel.create({
+      user: user._id,
+      title: req.body.posttitle,
+      postImage: req.file.filename,
+      description: req.body.description
+    });
+    user.posts.push(postData._id);
+    await user.save();
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error in /createpost route:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // isLoggedIn
 function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated()){
-    return next();
+  try {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.redirect("/");
+  } catch (error) {
+    console.error("Error in isLoggedIn middleware:", error);
+    res.status(500).send("Internal Server Error");
   }
-  res.redirect("/");
-};
-
-
+}
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -107,14 +124,24 @@ router.get('/login', function(req, res, next) {
 });
 
 router.get('/profile', isLoggedIn, async function(req, res, next) {
-  const user = await userModel.findOne({ username: req.session.passport.user }).populate("posts");
-  res.render('profile', { user });
+  try {
+    const user = await userModel.findOne({ username: req.session.passport.user }).populate("posts");
+    res.render('profile', { user });
+  } catch (error) {
+    console.error("Error in /profile route:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.get('/feed', isLoggedIn, async function(req, res, next) {
-  const user = await userModel.findOne({ username: req.session.passport.user });
-  const posts = await postModel.find().populate("user");
-  res.render('feed', { user, posts });
+  try {
+    const user = await userModel.findOne({ username: req.session.passport.user });
+    const posts = await postModel.find().populate("user");
+    res.render('feed', { user, posts });
+  } catch (error) {
+    console.error("Error in /feed route:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.get('/uploadpost', isLoggedIn, function(req, res, next) {
@@ -122,19 +149,18 @@ router.get('/uploadpost', isLoggedIn, function(req, res, next) {
 });
 
 router.get('/post/details', isLoggedIn, async function(req, res, next) {
-
-  const user = await userModel.findOne({ username: req.session.passport.user });
-  const { postId, userId } = req.query;
-
-  const post = await postModel.findById(postId).populate("user");
-  
-
-  if(!post){
-    return res.status(404).send("Post is not found")
+  try {
+    const user = await userModel.findOne({ username: req.session.passport.user });
+    const { postId, userId } = req.query;
+    const post = await postModel.findById(postId).populate("user");
+    if (!post) {
+      return res.status(404).send("Post is not found");
+    }
+    res.render('details', { post, user });
+  } catch (error) {
+    console.error("Error in /post/details route:", error);
+    res.status(500).send("Internal Server Error");
   }
-  res.render('details', { post, user });
-
 });
-
 
 module.exports = router;
