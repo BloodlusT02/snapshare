@@ -1,8 +1,5 @@
 # Environment variables
 .env
 
-# Vercel
-vercel.json
-
 # Node modules
 node_modules/
