@@ -7,18 +7,6 @@ const postModel = require("./post");
 const localStrategy = require("passport-local");
 const passport = require("passport");
 
-// Connect to MongoDB once and export the connection
-const connectToMongoDB = async () => {
-  try {
-    await mongoose.connect(`mongodb+srv://ritikrajbhar321:geeta321@snapshare.jdqurkh.mongodb.net/snapshare`);
-    console.log("Connected to MongoDB");
-  } catch (error) {
-    console.error("ERROR connecting to MongoDB: ", error);
-    process.exit(1); // Exit the process if we can't connect to the database
-  }
-};
-
-connectToMongoDB();
 
 passport.use(new localStrategy(userModel.authenticate()));
 

@@ -14,6 +14,7 @@ const passport = require("passport");
 const expressSession = require("express-session");
 const flash = require("connect-flash");
 const { pseudoRandomBytes } = require('crypto');
+const mongoose = require("mongoose");
 
 var app = express();
 let PORT = process.env.PORT || 8000;
@@ -35,6 +36,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.serializeUser(usersRouter.serializeUser());
 passport.deserializeUser(usersRouter.deserializeUser());
+
+// Connect to MongoDB once and export the connection
+const connectToMongoDB = async () => {
+  try {
+    await mongoose.connect(`${process.env.MONGODB_URI}/snapshare`);
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("ERROR connecting to MongoDB: ", error);
+    process.exit(1); // Exit the process if we can't connect to the database
+  }
+};
+connectToMongoDB();
 
 // flash
 app.use(flash());

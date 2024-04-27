@@ -71,23 +71,6 @@
       </div>
     </nav>
 
-    <!-- <main>
-      <div class="h-screen py-3 px-4 flex flex-wrap justify-center md:justify-start gap-4 xl:gap-2 bg-re">
-        <% posts.forEach(function(post){ %>
-          <div class="w-fit h-fit">
-            <div class="w-64 h-80 rounded overflow-hidden md:w-60 xl:w-56">
-              <a href="/post/details?postId=<%= post._id %>&userId=<%= post.user %>&postImage=<%= post.postImage %>&title=<%= post.title %>&profileImage=<%= post.user.profileImage %>">
-              <img class="w-full h-full object-cover" src="/images/uploads/<%= post.postImage %>" alt="">
-            </div>
-            <div class="w-60">
-              <h4 class="font-semibold pl-2 mt-2"><%= post.title %></h4>
-              <p class="text-xs font-semibold opacity-60 pl-2 pb-2">@<%= post.user.username %></p>
-            </div>
-          </div>
-        <% }) %>
-      </div>
-    </main> -->
-
         <!-- posts -->
         <div class="flex flex-wrap gap-5 justify-center md:justify-start md:px-6 lg:px-10 xl:px-16">
           <% posts.forEach(function(post){ %>
@@ -95,7 +78,7 @@
             <div class="h-fit">
               <div>
                 <!-- Posts -->
-                <div class="w-72 h-96 bg-purple-300 rounded overflow-hidden cursor-pointer lg:w-64 lg:h-80">
+                <div class="w-72 h-96 bg-gray-300 rounded overflow-hidden cursor-pointer lg:w-64 lg:h-80">
                   <a href="/post/details?postId=<%= post._id %>&userId=<%= post.user %>&postImage=<%= post.postImage %>&title=<%= post.title %>&profileImage=<%= post.user.profileImage %>">
                     <img class="w-full h-full object-cover" src="/images/uploads/<%= post.postImage %>" alt="">
                   </a>
