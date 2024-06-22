@@ -99,8 +99,8 @@ Routes = User Authentication
 - dotenv: Loads environment variables from .env file
 - connect-flash: Flash messages for Express
 
-  # License
-  This project is licensed under the MIT License - see the LICENSE file for details.
+# License
+- This project is licensed under the MIT License - see the LICENSE file for details.
 
 # Acknowledgments
 - Thanks to the creators of the libraries and frameworks used in this project.
